@@ -1,9 +1,12 @@
 package org.example;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public interface IProcessadorBoletos {
 
-     public ArrayList<Pagamento> processaPagamento(ArrayList<String> boletos);
+     void processaPagamento(ArrayList<Boleto> boletos, Fatura fatura);
+
+     boolean pagamentoSuficiente(BigDecimal valorFatura, BigDecimal valorTotalBoletos);
 
 }
