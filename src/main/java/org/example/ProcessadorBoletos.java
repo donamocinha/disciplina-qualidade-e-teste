@@ -17,15 +17,21 @@ public class ProcessadorBoletos implements IProcessadorBoletos {
         totalValorBoletos.ifPresent(total-> {
             if(pagamentoSuficiente(fatura.valorFatura(), total))
              fatura.faturaPaga();
+            else {
+                System.out.println("PAGAMENTO INSUFICIENTE");
+            }
         });
 
-        ArrayList<Pagamento> pagamentos = new ArrayList<>();
-        boletos.forEach(boleto -> {
-            Pagamento pagamento = new Pagamento(boleto.recuperaValorPago(), TipoPagamento.BOLETO,
-                    boleto.recuperaCodigo());
-            pagamentos.add(pagamento);});
+        if(totalValorBoletos.isPresent()) {
+            ArrayList<Pagamento> pagamentos = new ArrayList<>();
+            boletos.forEach(boleto -> {
+                Pagamento pagamento = new Pagamento(boleto.recuperaValorPago(), TipoPagamento.BOLETO,
+                        boleto.recuperaCodigo());
+                pagamentos.add(pagamento);
+            });
 
-        fatura.salvaPagamentos(pagamentos);
+            fatura.salvaPagamentos(pagamentos);
+        }
     };
 
 

@@ -34,7 +34,7 @@ class ProcessadorBoletosTest {
 
         processadorBoletos.processaPagamento(boletos, fatura);
 
-        assertEquals(0, fatura.recuperaPagamentos().size());
+        assertNull(fatura.recuperaPagamentos());
         assertNull(fatura.situacao());
 
     }
@@ -47,18 +47,15 @@ class ProcessadorBoletosTest {
         assertNotNull(boleto.recuperaCodigo());
         processadorBoletos.processaPagamento(boletos, fatura);
 
-        Assertions.assertAll(()-> {
-            assertEquals(EstadoPagamento.PAGA, fatura.situacao());
-            assertNotNull(fatura.recuperaPagamentos());
-            assertFalse(fatura.recuperaPagamentos().isEmpty());
-        });
-        if(fatura.recuperaPagamentos() != null && !fatura.recuperaPagamentos().isEmpty()) {
-            assertEquals(1, fatura.recuperaPagamentos().size());
-            Pagamento pagamento = fatura.recuperaPagamentos().get(0);
-            assertEquals(boleto.recuperaValorPago(), pagamento.recuperarValorPago());
-            assertEquals(TipoPagamento.BOLETO, pagamento.recuperarTipoPagamento());
-            assertEquals(boleto.recuperaCodigo(), pagamento.recuperarCodigoBoleto());
-        }
+        assertEquals(EstadoPagamento.PAGA, fatura.situacao());
+        assertNotNull(fatura.recuperaPagamentos());
+        assertFalse(fatura.recuperaPagamentos().isEmpty());
+
+        assertEquals(1, fatura.recuperaPagamentos().size());
+        Pagamento pagamento = fatura.recuperaPagamentos().get(0);
+        assertEquals(boleto.recuperaValorPago(), pagamento.recuperarValorPago());
+        assertEquals(TipoPagamento.BOLETO, pagamento.recuperarTipoPagamento());
+        assertEquals(boleto.recuperaCodigo(), pagamento.recuperarCodigoBoleto());
 
     }
 
